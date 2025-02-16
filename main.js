@@ -111,27 +111,32 @@ function colorHistory() {
 }
 
 function resizeScreen(event) {
-    const current_mouseX = event.clientX
+    const current_mouseX = event.clientX;
 
-    let width_canvas = (window.getComputedStyle(canvas)).getPropertyValue("width").replace("px", "")
-    let height_resize_bar = (window.getComputedStyle(resize_bar)).getPropertyValue("height").replace("px", "")
+    // Obtenha a largura do canvas e a altura da barra de redimensionamento
+    let width_canvas = parseInt(window.getComputedStyle(canvas).getPropertyValue("width"));
+    let height_resize_bar = parseInt(window.getComputedStyle(resize_bar).getPropertyValue("height"));
 
-    let width = Number(width_canvas)
-    let height = Number(height_resize_bar)
+    // Calcule a diferença entre as posições do mouse
+    let deltaX = current_mouseX - prev_mouseX;
 
-    if (current_mouseX > prev_mouseX) {
-        canvas.style.width = `${width+1}px`
-        resize_bar.style.height = `${height+1}px`
-    }
+    // Atualize a largura do canvas com base no movimento do mouse
+    let newWidth = width_canvas + deltaX;
 
-    else {
-        canvas.style.width = `${width-1}px`
-        resize_bar.style.height = `${height-1}px`
-    }
+    // Defina um limite mínimo e máximo para a largura do canvas, se necessário
+    newWidth = Math.max(100, Math.min(window.innerWidth - 50, newWidth));
 
-    prev_mouseX = event.clientX
+    // A altura da barra de redimensionamento será ajustada proporcionalmente, ou você pode ajustá-la conforme necessário
+    let newHeight = height_resize_bar + deltaX;
 
-    console.log(`canvas: ${Number(width_canvas)}\nResize bar: ${Number(height_resize_bar)}`)
+    // Atualize as propriedades de estilo do canvas e da barra de redimensionamento
+    canvas.style.width = `${newWidth}px`;
+    resize_bar.style.height = `${newHeight}px`;
+
+    // Atualize a posição anterior do mouse para o próximo cálculo
+    prev_mouseX = current_mouseX;
+
+    console.log(`canvas: ${newWidth}px\nResize bar: ${newHeight}px`);
 }
 
 function resizingFinished() {

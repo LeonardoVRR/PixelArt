@@ -158,3 +158,19 @@ function rgbToHex(rgb) {
     // Converte para hexadecimal e garante que tenha 2 dígitos para cada cor
     return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).toUpperCase()}`;
 }
+
+const saveCanvas = () => {
+    html2canvas(canvas, {
+        onrendered: (image) => {
+            const img = image.toDataURL("image/png");
+            const link = document.createElement("a");
+
+            link.href = img;
+            link.download = "pixelart.png";
+
+            link.click();
+        },
+    });
+};
+
+save_img_btn.addEventListener("click", saveCanvas);

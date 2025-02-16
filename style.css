@@ -43,7 +43,8 @@ aside {
 
 .canvas {
   width: 100%;
-  max-width: 720px;
+  max-width: 640px;
+  min-width: 124px;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -133,9 +134,12 @@ aside {
 }
 
 .resize {
-  height: 720px;
+  height: 640px;
+  max-height: 640px;
+  min-height: 124px;
   width: 2px;
   background-color: #444;
   margin-top: 20px;
   cursor: col-resize;
+  user-select: none;
 }

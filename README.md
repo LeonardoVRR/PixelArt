@@ -11,7 +11,7 @@
 - [Licença](#licença)
 
 ## Descrição do projeto
-esse projeto contem uma área delimitada que permite fazer desenhos no estilo Pixel Art e depois fazer o download delas.
+O Pixel Art Studio é uma aplicação web simples e intuitiva desenvolvida com HTML, CSS e JavaScript, permitindo que os usuários criem suas próprias artes em pixel diretamente do navegador e depois fazer o download delas.
 
 ## Pré-requisitos
 não é necessário nenhum pré-requisito é só acessar o projeto pelo link disponibilizado em [Acesso ao Projeto](#acesso-ao-projeto) e utiliza-lo.

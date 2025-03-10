@@ -4,8 +4,13 @@ const screen_size = document.querySelector(".input-size");
 const save_img_btn = document.querySelector(".btn-save");
 const color_history_container = document.querySelector(".color-history")
 const resize_bar = document.querySelector(".resize")
+const toolsContainer = document.querySelector(".tools-container")
+ 
 const colors_used = []
 
+let isDrawing = false;
+let toolName = ""
+let previus_tool = null
 let previus_color = paint_color.value
 let prev_mouseX = 0
 
@@ -18,6 +23,7 @@ screen_size.addEventListener("change", () => {
     createScreen(size);  // Cria a tela com o novo tamanho quando o valor mudar
 });
 
+// atualiza a cor do lapis
 paint_color.addEventListener("change", () => {
 
     colors_used.push(previus_color)
@@ -29,10 +35,52 @@ paint_color.addEventListener("change", () => {
 
 color_history_container.addEventListener("click", useColorHistory)
 
-canvas.addEventListener("mousedown", () => {
+toolsContainer.addEventListener("click", (event) => {
 
-    canvas.addEventListener("mousemove", draw_canvas)
-    canvas.addEventListener("mouseup", finishDrawing)
+    const toolSelected = event.target
+
+    if (toolSelected.title != "") {
+
+        toolName = toolSelected.title.toLowerCase()
+
+        if (toolSelected != previus_tool && previus_tool == null) {
+            toolSelected.classList.add("tool-item_selected")
+        }
+    
+        else if (toolSelected != previus_tool) {
+            toolSelected.classList.add("tool-item_selected")
+            previus_tool.classList.remove("tool-item_selected")
+        }
+
+        // if (toolSelected.title == "Balde") {
+        //     canvas.addEventListener("click", (event) => {
+            
+        //         draw_canvas(event, "balde")
+                
+        //     })
+        // }
+
+        // else if (toolSelected.title == "Limpar Tela") {
+
+        //     canvas.addEventListener("click", (event) => {
+            
+        //         draw_canvas(event, "limparTela")
+                
+        //     })
+
+        // }
+
+        // else {
+        //     canvas.addEventListener("mousedown", toolFunction)
+        // }
+
+        canvas.addEventListener("mousedown", toolFunction)
+    
+        previus_tool = toolSelected
+
+    }
+
+    console.log(toolSelected.title)
 })
 
 resize_bar.addEventListener("mousedown", (event) => {
@@ -44,6 +92,37 @@ resize_bar.addEventListener("mousedown", (event) => {
     window.addEventListener("mousemove", resizeScreen)
     window.addEventListener("mouseup", resizingFinished)
 })
+
+window.addEventListener("resize", () => {
+    resizeScreen("window")
+})
+
+function toolFunction() {
+
+    console.log(`Ferramenta selecionada: ${toolName}`)
+
+    isDrawing = true
+    
+    canvas.addEventListener("click", (event) => {
+        
+        draw_canvas(event, toolName)
+        
+    })
+
+    if (toolName == "lapis" || toolName == "borracha") {
+        canvas.addEventListener("mousemove", (event) => { 
+
+            if (isDrawing) {
+                draw_canvas(event, toolName)
+            }
+    
+        })
+    }
+
+
+    canvas.addEventListener("mouseup", finishDrawing)
+
+}
 
 function createScreen(matriz = 10) {
     canvas.innerHTML = '';  // Limpa a tela antes de reconstruir
@@ -73,18 +152,61 @@ function createScreen(matriz = 10) {
     }
 }
 
-function draw_canvas(event) {
+function draw_canvas(event, tool) {
+
     const current_pixel = event.target
 
     if (current_pixel.className === "pixel") {
-        current_pixel.style.backgroundColor = paint_color.value
+
+        console.log(`Ferramenta em uso: ${tool}`)
+
+        if (tool == "lapis") {
+            current_pixel.style.backgroundColor = paint_color.value
+        }
+    
+        else if (tool == "borracha") {
+            current_pixel.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-canvas')
+        }
+
+        else {
+
+            const pixels = document.querySelectorAll(".pixel")
+
+            const pixelSelectedColor = getComputedStyle(current_pixel).backgroundColor
+
+            if (tool == "balde") {
+                pixels.forEach( (pixel) => {
+
+                    const pixelColor = getComputedStyle(pixel).backgroundColor
+    
+                    if (pixelColor == pixelSelectedColor && tool == "balde") {
+                        pixel.style.backgroundColor = paint_color.value
+                    }
+    
+                })
+            }
+
+            else {
+                pixels.forEach( (pixel) => {
+
+                    pixel.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-canvas')
+    
+                })
+            }
+
+        }
+
     }
+
 }
 
 function finishDrawing() {
 
+    isDrawing = false
+
     console.log("Desenho terminado")
 
+    canvas.removeEventListener("click", draw_canvas)
     canvas.removeEventListener("mousemove", draw_canvas)
     canvas.removeEventListener("mouseup", finishDrawing)
 }
@@ -110,7 +232,7 @@ function colorHistory() {
     })
 }
 
-function resizeScreen(event) {
+function resizeScreen(event, type = "resizeBar") {
     const current_mouseX = event.clientX;
 
     // Obtenha a largura do canvas e a altura da barra de redimensionamento
@@ -127,11 +249,16 @@ function resizeScreen(event) {
     newWidth = Math.max(100, Math.min(window.innerWidth - 50, newWidth));
 
     // A altura da barra de redimensionamento será ajustada proporcionalmente, ou você pode ajustá-la conforme necessário
-    let newHeight = height_resize_bar + deltaX;
+    let newHeight = type == "resizeBar" ? height_resize_bar + deltaX : height_resize_bar
+
+    newHeight = Math.max(100, Math.min(window.innerHeight - 50, newHeight));
 
     // Atualize as propriedades de estilo do canvas e da barra de redimensionamento
     canvas.style.width = `${newWidth}px`;
-    resize_bar.style.height = `${newHeight}px`;
+
+    if (newHeight <= (window.innerHeight / 100 * 80)) {
+        resize_bar.style.height = `${newHeight}px`;
+    }
 
     // Atualize a posição anterior do mouse para o próximo cálculo
     prev_mouseX = current_mouseX;

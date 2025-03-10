@@ -17,7 +17,8 @@ esse projeto contem uma área delimitada que permite fazer desenhos no estilo Pi
 não é necessário nenhum pré-requisito é só acessar o projeto pelo link disponibilizado em [Acesso ao Projeto](#acesso-ao-projeto) e utiliza-lo.
 
 ## Resultado final do projeto
-![Captura de tela 2025-03-10 172354](https://github.com/user-attachments/assets/865f7332-a9dc-49ac-8fe0-a50934333f3a)
+![demonstracao](https://github.com/user-attachments/assets/1291c679-5611-4386-992b-c723a04f0720)
+
 
 
 

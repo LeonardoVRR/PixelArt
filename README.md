@@ -6,7 +6,6 @@
 - [Descrição do Projeto](#descrição-do-projeto)
 - [Pré-requisitos](#pré-requisitos)
 - [Resultado final do projeto](#resultado-final-do-projeto)
-- [Possiveis problemas](#possiveis-problemas)
 - [Acesso ao Projeto](#acesso-ao-projeto)
 - [Tecnologias utilizadas](#tecnologias-utilizadas)
 - [Licença](#licença)
@@ -18,11 +17,11 @@ esse projeto contem uma área delimitada que permite fazer desenhos no estilo Pi
 não é necessário nenhum pré-requisito é só acessar o projeto pelo link disponibilizado em [Acesso ao Projeto](#acesso-ao-projeto) e utiliza-lo.
 
 ## Resultado final do projeto
-![demo]()
+![Captura de tela 2025-03-10 172354](https://github.com/user-attachments/assets/865f7332-a9dc-49ac-8fe0-a50934333f3a)
 
 
-## Possiveis problemas
-o projeto foi testado apenas no navegador Google Chrome, então pode ser possivel que alguns recursos não tenham compatibilidade com outros navegadores.
+
+
 
 ## Acesso ao Projeto
 para acessar o projeto utilize o seguinte link:
